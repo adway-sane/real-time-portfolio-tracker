@@ -6,6 +6,7 @@ import CountUp from 'react-countup';
 import { TrendingUp, TrendingDown, DollarSign, Percent } from 'lucide-react';
 import { Asset, Portfolio, ChartData, PieChartData } from '@/types';
 import { getChangeColor } from '@/utils/formatters';
+import { fetchCryptoData, fetchStockData } from '@/utils/api';
 import Navbar from './Navbar';
 import PortfolioForm from './PortfolioForm';
 import AssetTable from './AssetTable';
@@ -71,19 +72,17 @@ export default function Dashboard() {
       const promises = [];
 
       if (cryptoAssets.length > 0) {
-        const cryptoSymbols = cryptoAssets.map(asset => asset.symbol).join(',');
+        const cryptoSymbols = cryptoAssets.map(asset => asset.symbol);
         promises.push(
-          fetch(`/api/crypto?symbols=${cryptoSymbols}`)
-            .then(res => res.json())
+          fetchCryptoData(cryptoSymbols)
             .then(data => ({ type: 'crypto', data }))
         );
       }
 
       if (stockAssets.length > 0) {
-        const stockSymbols = stockAssets.map(asset => asset.symbol).join(',');
+        const stockSymbols = stockAssets.map(asset => asset.symbol);
         promises.push(
-          fetch(`/api/stocks?symbols=${stockSymbols}`)
-            .then(res => res.json())
+          fetchStockData(stockSymbols)
             .then(data => ({ type: 'stock', data }))
         );
       }
