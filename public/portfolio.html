@@ -364,6 +364,28 @@
                 </div>
             </div>
 
+            <!-- API Setup Instructions -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem;">🔑 Get Real-Time Data</h3>
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.8);">
+                    <p><strong>For Real Stock Data:</strong></p>
+                    <ol style="margin-left: 1rem; margin-bottom: 1rem;">
+                        <li>Go to <a href="https://www.alphavantage.co/support/#api-key" target="_blank" style="color: #60a5fa;">Alpha Vantage</a></li>
+                        <li>Sign up for a free API key (500 requests/day)</li>
+                        <li>Replace 'demo' in the code with your API key</li>
+                        <li>Deploy the updated code</li>
+                    </ol>
+                    <p><strong>For Real Crypto Data:</strong></p>
+                    <ul style="margin-left: 1rem;">
+                        <li>CoinGecko API is already working (no key needed)</li>
+                        <li>Try: bitcoin, ethereum, cardano, polkadot</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #fbbf24;">
+                        <strong>Current Status:</strong> Using demo data to avoid rate limits
+                    </p>
+                </div>
+            </div>
+
             <!-- Charts -->
             <div class="charts-grid">
                 <div class="chart-card">
@@ -399,7 +421,8 @@
 
     <script>
         // Alpha Vantage API Key (Free tier - 500 requests per day)
-        const ALPHA_VANTAGE_API_KEY = 'demo'; // Using demo key to avoid rate limits
+        // Get your free API key at: https://www.alphavantage.co/support/#api-key
+        const ALPHA_VANTAGE_API_KEY = 'demo'; // Replace with your API key for real data
         const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
         
         let portfolio = [];
@@ -616,13 +639,28 @@
         // Fetch crypto data from CoinGecko
         async function fetchCryptoPrice(symbol) {
             try {
-                const response = await fetch(`${COINGECKO_API_URL}/simple/price?ids=${symbol.toLowerCase()}&vs_currencies=usd&include_24hr_change=true`);
+                // Map common symbols to CoinGecko IDs
+                const symbolMap = {
+                    'BTC': 'bitcoin',
+                    'ETH': 'ethereum',
+                    'ADA': 'cardano',
+                    'DOT': 'polkadot',
+                    'LINK': 'chainlink',
+                    'LTC': 'litecoin',
+                    'SOL': 'solana',
+                    'AVAX': 'avalanche-2',
+                    'MATIC': 'matic-network',
+                    'UNI': 'uniswap'
+                };
+                
+                const coinId = symbolMap[symbol] || symbol.toLowerCase();
+                const response = await fetch(`${COINGECKO_API_URL}/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_change=true`);
                 const data = await response.json();
                 
                 console.log('Crypto API response:', data); // Debug log
                 
-                if (data[symbol.toLowerCase()]) {
-                    const crypto = data[symbol.toLowerCase()];
+                if (data[coinId]) {
+                    const crypto = data[coinId];
                     const price = crypto.usd;
                     const changePercent = crypto.usd_24h_change || 0;
                     
@@ -640,18 +678,18 @@
                 console.error('Error fetching crypto data:', error);
                 // Fallback to realistic mock data based on current market
                 const mockPrices = {
-                    'bitcoin': { price: 43250, changePercent: 2.3 },
-                    'ethereum': { price: 3150, changePercent: -1.1 },
-                    'cardano': { price: 0.48, changePercent: 0.7 },
-                    'polkadot': { price: 6.95, changePercent: 3.1 },
-                    'chainlink': { price: 15.80, changePercent: 1.2 },
-                    'litecoin': { price: 118.50, changePercent: -0.4 },
-                    'solana': { price: 95.20, changePercent: 1.8 },
-                    'avalanche': { price: 28.40, changePercent: 2.1 },
-                    'polygon': { price: 0.85, changePercent: 0.9 },
-                    'uniswap': { price: 8.20, changePercent: -0.6 }
+                    'BTC': { price: 43250, changePercent: 2.3 },
+                    'ETH': { price: 3150, changePercent: -1.1 },
+                    'ADA': { price: 0.48, changePercent: 0.7 },
+                    'DOT': { price: 6.95, changePercent: 3.1 },
+                    'LINK': { price: 15.80, changePercent: 1.2 },
+                    'LTC': { price: 118.50, changePercent: -0.4 },
+                    'SOL': { price: 95.20, changePercent: 1.8 },
+                    'AVAX': { price: 28.40, changePercent: 2.1 },
+                    'MATIC': { price: 0.85, changePercent: 0.9 },
+                    'UNI': { price: 8.20, changePercent: -0.6 }
                 };
-                return { ...mockPrices[symbol.toLowerCase()] || { price: 100, changePercent: 0 }, isMock: true };
+                return { ...mockPrices[symbol] || { price: 100, changePercent: 0 }, isMock: true };
             }
         }
 
