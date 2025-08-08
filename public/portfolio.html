@@ -16,15 +16,15 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0a0a0a;
             min-height: 100vh;
-            color: white;
+            color: #ffffff;
         }
         
         .navbar {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.2);
             padding: 1rem 0;
             position: sticky;
             top: 0;
@@ -52,6 +52,7 @@
         .logo h1 {
             font-size: 1.5rem;
             font-weight: bold;
+            color: #22c55e;
         }
         
         .main-content {
@@ -66,11 +67,12 @@
         }
         
         .card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 1rem;
             padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         .form-group {
@@ -81,35 +83,45 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
+            color: #e5e7eb;
         }
         
         .form-group input, .form-group select {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(34, 197, 94, 0.3);
             border-radius: 0.5rem;
-            background: rgba(0,0,0,0.2);
+            background: rgba(10, 10, 10, 0.8);
             color: white;
             font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
         }
         
         .form-group input::placeholder {
-            color: rgba(255,255,255,0.6);
+            color: rgba(229, 231, 235, 0.6);
         }
         
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
         
         .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
         }
         
         .btn:disabled {
@@ -126,22 +138,30 @@
         }
         
         .stat-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 1rem;
             padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(34, 197, 94, 0.2);
             text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
         
         .stat-value {
             font-size: 2rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
+            color: #22c55e;
         }
         
         .stat-label {
-            color: rgba(255,255,255,0.8);
+            color: rgba(229, 231, 235, 0.8);
             font-size: 0.9rem;
         }
         
@@ -153,11 +173,12 @@
         }
         
         .chart-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 1rem;
             padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         .chart-title {
@@ -165,6 +186,7 @@
             font-weight: 600;
             margin-bottom: 1rem;
             text-align: center;
+            color: #22c55e;
         }
         
         .chart-container {
@@ -182,30 +204,31 @@
         .asset-table td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
         }
         
         .asset-table th {
             font-weight: 600;
-            color: rgba(255,255,255,0.8);
+            color: rgba(229, 231, 235, 0.8);
+            background: rgba(20, 20, 20, 0.5);
         }
         
-        .positive { color: #4ade80; }
-        .negative { color: #f87171; }
+        .positive { color: #22c55e; }
+        .negative { color: #ef4444; }
         
         .empty-state {
             text-align: center;
             padding: 3rem;
-            color: rgba(255,255,255,0.6);
+            color: rgba(229, 231, 235, 0.6);
         }
         
         .loading {
             display: inline-block;
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(34, 197, 94, 0.3);
             border-radius: 50%;
-            border-top-color: #fff;
+            border-top-color: #22c55e;
             animation: spin 1s ease-in-out infinite;
         }
         
@@ -214,19 +237,22 @@
         }
         
         .status {
-            background: rgba(255,255,255,0.1);
+            background: rgba(20, 20, 20, 0.8);
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
             margin-bottom: 1rem;
             font-size: 0.9rem;
+            border: 1px solid rgba(34, 197, 94, 0.2);
         }
         
         .status.success {
-            border-left: 4px solid #4ade80;
+            border-left: 4px solid #22c55e;
+            color: #22c55e;
         }
         
         .status.error {
-            border-left: 4px solid #f87171;
+            border-left: 4px solid #ef4444;
+            color: #ef4444;
         }
         
         .features-grid {
@@ -237,12 +263,19 @@
         }
         
         .feature-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 1rem;
             padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(34, 197, 94, 0.2);
             text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
         
         .feature-icon {
@@ -254,10 +287,11 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: #22c55e;
         }
         
         .feature-desc {
-            color: rgba(255,255,255,0.8);
+            color: rgba(229, 231, 235, 0.8);
             font-size: 0.9rem;
         }
         
@@ -299,7 +333,7 @@
             <div class="grid">
                 <!-- Portfolio Form -->
                 <div class="card">
-                    <h2 style="margin-bottom: 1rem;">Add Asset</h2>
+                    <h2 style="margin-bottom: 1rem; color: #22c55e;">Add Asset</h2>
                     <div id="status" class="status success" style="display: none;"></div>
                     <form id="assetForm">
                         <div class="form-group">
@@ -355,34 +389,12 @@
                 <div class="feature-card">
                     <div class="feature-icon">🎨</div>
                     <div class="feature-title">Modern UI</div>
-                    <div class="feature-desc">Glassmorphism design with smooth animations</div>
+                    <div class="feature-desc">Matte black design with green accents</div>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <div class="feature-title">Auto-refresh</div>
                     <div class="feature-desc">Updates every 60 seconds automatically</div>
-                </div>
-            </div>
-
-            <!-- API Setup Instructions -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem;">🔑 Get Real-Time Data</h3>
-                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.8);">
-                    <p><strong>For Real Stock Data:</strong></p>
-                    <ol style="margin-left: 1rem; margin-bottom: 1rem;">
-                        <li>Go to <a href="https://www.alphavantage.co/support/#api-key" target="_blank" style="color: #60a5fa;">Alpha Vantage</a></li>
-                        <li>Sign up for a free API key (500 requests/day)</li>
-                        <li>Replace 'demo' in the code with your API key</li>
-                        <li>Deploy the updated code</li>
-                    </ol>
-                    <p><strong>For Real Crypto Data:</strong></p>
-                    <ul style="margin-left: 1rem;">
-                        <li>CoinGecko API is already working (no key needed)</li>
-                        <li>Try: bitcoin, ethereum, cardano, polkadot</li>
-                    </ul>
-                    <p style="margin-top: 1rem; color: #fbbf24;">
-                        <strong>Current Status:</strong> Using demo data to avoid rate limits
-                    </p>
                 </div>
             </div>
 
@@ -404,9 +416,9 @@
 
             <!-- Asset Table -->
             <div class="card">
-                <h2 style="margin-bottom: 1rem;">Portfolio Assets</h2>
-                <div style="margin-bottom: 1rem; font-size: 0.8rem; color: rgba(255,255,255,0.7);">
-                    <span style="color: #4ade80;">●</span> Live data | 
+                <h2 style="margin-bottom: 1rem; color: #22c55e;">Portfolio Assets</h2>
+                <div style="margin-bottom: 1rem; font-size: 0.8rem; color: rgba(229, 231, 235, 0.7);">
+                    <span style="color: #22c55e;">●</span> Live data | 
                     <span style="color: #fbbf24;">●</span> Demo data
                 </div>
                 <div id="assetTable">
@@ -451,8 +463,8 @@
                         datasets: [{
                             label: 'Portfolio Value',
                             data: [0],
-                            borderColor: '#4ade80',
-                            backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
                             fill: true,
                             tension: 0.4
                         }]
@@ -473,7 +485,7 @@
                                     color: 'white'
                                 },
                                 grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
+                                    color: 'rgba(34, 197, 94, 0.1)'
                                 }
                             },
                             y: {
@@ -481,7 +493,7 @@
                                     color: 'white'
                                 },
                                 grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
+                                    color: 'rgba(34, 197, 94, 0.1)'
                                 }
                             }
                         }
@@ -503,11 +515,11 @@
                         datasets: [{
                             data: [1],
                             backgroundColor: [
-                                '#4ade80', '#fbbf24', '#f87171', '#60a5fa',
-                                '#a78bfa', '#f472b6', '#34d399', '#fbbf24'
+                                '#22c55e', '#fbbf24', '#ef4444', '#3b82f6',
+                                '#8b5cf6', '#ec4899', '#10b981', '#f59e0b'
                             ],
                             borderWidth: 2,
-                            borderColor: 'rgba(255, 255, 255, 0.2)'
+                            borderColor: 'rgba(34, 197, 94, 0.2)'
                         }]
                     },
                     options: {
@@ -833,9 +845,9 @@
                                 <td class="${asset.priceChange >= 0 ? 'positive' : 'negative'}">
                                     ${asset.priceChange >= 0 ? '+' : ''}${asset.priceChange.toFixed(2)}%
                                 </td>
-                                <td style="font-size: 0.8rem; color: rgba(255,255,255,0.7);">
+                                <td style="font-size: 0.8rem; color: rgba(229, 231, 235, 0.7);">
                                     ${asset.lastUpdated}
-                                    ${asset.isLiveData ? '<span style="color: #4ade80;">●</span>' : '<span style="color: #fbbf24;">●</span>'}
+                                    ${asset.isLiveData ? '<span style="color: #22c55e;">●</span>' : '<span style="color: #fbbf24;">●</span>'}
                                 </td>
                                 <td>
                                     <button class="btn" onclick="removeAsset(${asset.id})" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Remove</button>
