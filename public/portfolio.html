@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Tracker - Real-time Crypto & Stocks</title>
+    <meta name="description" content="Track your cryptocurrency and stock portfolio in real-time with beautiful charts and live updates">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .navbar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 0.5rem;
+            background: rgba(0,0,0,0.2);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+        
+        .asset-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .asset-table th,
+        .asset-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .asset-table th {
+            font-weight: 600;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .positive { color: #4ade80; }
+        .negative { color: #f87171; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <h1>🚀 Portfolio Tracker</h1>
+                </div>
+                <div>
+                    <button class="btn" onclick="refreshData()">Refresh</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="grid">
+                <!-- Portfolio Form -->
+                <div class="card">
+                    <h2 style="margin-bottom: 1rem;">Add Asset</h2>
+                    <form id="assetForm">
+                        <div class="form-group">
+                            <label for="assetType">Asset Type</label>
+                            <select id="assetType" required>
+                                <option value="crypto">Cryptocurrency</option>
+                                <option value="stock">Stock</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="symbol">Symbol</label>
+                            <input type="text" id="symbol" placeholder="e.g., BTC, ETH, AAPL" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" step="any" min="0" placeholder="0.0" required>
+                        </div>
+                        <button type="submit" class="btn">Add Asset</button>
+                    </form>
+                </div>
+
+                <!-- Portfolio Stats -->
+                <div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalValue">$0.00</div>
+                            <div class="stat-label">Total Value</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalChange">+0.00%</div>
+                            <div class="stat-label">24h Change</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="assetCount">0</div>
+                            <div class="stat-label">Assets</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asset Table -->
+            <div class="card">
+                <h2 style="margin-bottom: 1rem;">Portfolio Assets</h2>
+                <div id="assetTable">
+                    <div class="empty-state">
+                        <h3>No assets in portfolio</h3>
+                        <p>Add some assets to get started</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data for demo
+        const mockPrices = {
+            'BTC': { price: 45000, change: 2.5 },
+            'ETH': { price: 3200, change: -1.2 },
+            'AAPL': { price: 180, change: 0.8 },
+            'GOOGL': { price: 140, change: -0.5 },
+            'TSLA': { price: 250, change: 3.2 },
+            'MSFT': { price: 380, change: 1.1 }
+        };
+
+        let portfolio = [];
+
+        function addAsset(event) {
+            event.preventDefault();
+            
+            const type = document.getElementById('assetType').value;
+            const symbol = document.getElementById('symbol').value.toUpperCase();
+            const quantity = parseFloat(document.getElementById('quantity').value);
+            
+            if (!symbol || !quantity) return;
+            
+            const asset = {
+                id: Date.now(),
+                type,
+                symbol,
+                quantity,
+                currentPrice: mockPrices[symbol]?.price || 100,
+                priceChange: mockPrices[symbol]?.change || 0
+            };
+            
+            portfolio.push(asset);
+            updateDisplay();
+            document.getElementById('assetForm').reset();
+        }
+
+        function removeAsset(id) {
+            portfolio = portfolio.filter(asset => asset.id !== id);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const totalValue = portfolio.reduce((sum, asset) => sum + (asset.quantity * asset.currentPrice), 0);
+            const totalChange = portfolio.reduce((sum, asset) => sum + (asset.quantity * asset.currentPrice * asset.priceChange / 100), 0);
+            const totalChangePercent = totalValue > 0 ? (totalChange / totalValue) * 100 : 0;
+            
+            document.getElementById('totalValue').textContent = `$${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('totalChange').textContent = `${totalChangePercent >= 0 ? '+' : ''}${totalChangePercent.toFixed(2)}%`;
+            document.getElementById('totalChange').className = `stat-value ${totalChangePercent >= 0 ? 'positive' : 'negative'}`;
+            document.getElementById('assetCount').textContent = portfolio.length;
+            
+            updateAssetTable();
+        }
+
+        function updateAssetTable() {
+            const tableDiv = document.getElementById('assetTable');
+            
+            if (portfolio.length === 0) {
+                tableDiv.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No assets in portfolio</h3>
+                        <p>Add some assets to get started</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const tableHTML = `
+                <table class="asset-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Value</th>
+                            <th>24h Change</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${portfolio.map(asset => `
+                            <tr>
+                                <td><strong>${asset.symbol}</strong></td>
+                                <td>${asset.type === 'crypto' ? 'Crypto' : 'Stock'}</td>
+                                <td>${asset.quantity}</td>
+                                <td>$${asset.currentPrice.toLocaleString()}</td>
+                                <td>$${(asset.quantity * asset.currentPrice).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td class="${asset.priceChange >= 0 ? 'positive' : 'negative'}">
+                                    ${asset.priceChange >= 0 ? '+' : ''}${asset.priceChange.toFixed(2)}%
+                                </td>
+                                <td>
+                                    <button class="btn" onclick="removeAsset(${asset.id})" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Remove</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            tableDiv.innerHTML = tableHTML;
+        }
+
+        function refreshData() {
+            // Simulate price updates
+            portfolio.forEach(asset => {
+                const randomChange = (Math.random() - 0.5) * 10;
+                asset.priceChange = randomChange;
+                asset.currentPrice = asset.currentPrice * (1 + randomChange / 100);
+            });
+            updateDisplay();
+        }
+
+        // Event listeners
+        document.getElementById('assetForm').addEventListener('submit', addAsset);
+        
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
+    </script>
+</body>
+</html>
