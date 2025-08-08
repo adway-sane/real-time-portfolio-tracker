@@ -1,67 +1,45 @@
-import { CryptoApiResponse } from '@/types';
-
 // Client-side API functions that work with static export
 export const fetchCryptoData = async (symbols: string[]): Promise<{ [key: string]: { price: number; change24h: number; symbol: string } }> => {
-  try {
-    // Convert symbols to CoinGecko IDs (basic mapping)
-    const symbolToId: { [key: string]: string } = {
-      'BTC': 'bitcoin',
-      'ETH': 'ethereum',
-      'ADA': 'cardano',
-      'DOT': 'polkadot',
-      'LINK': 'chainlink',
-      'LTC': 'litecoin',
-      'XRP': 'ripple',
-      'BCH': 'bitcoin-cash',
-      'BNB': 'binancecoin',
-      'SOL': 'solana',
-      'AVAX': 'avalanche-2',
-      'MATIC': 'matic-network',
-      'UNI': 'uniswap',
-      'ATOM': 'cosmos',
-      'ALGO': 'algorand'
-    };
+  // Mock crypto data for demo (to avoid CORS issues)
+  const MOCK_CRYPTO_DATA: { [key: string]: { price: number; change24h: number; symbol: string } } = {
+    'BTC': { price: 43250.67, change24h: 2.15, symbol: 'BTC' },
+    'ETH': { price: 2650.43, change24h: -1.23, symbol: 'ETH' },
+    'ADA': { price: 0.485, change24h: 0.87, symbol: 'ADA' },
+    'DOT': { price: 7.23, change24h: -0.45, symbol: 'DOT' },
+    'LINK': { price: 15.67, change24h: 3.21, symbol: 'LINK' },
+    'LTC': { price: 72.34, change24h: 1.54, symbol: 'LTC' },
+    'XRP': { price: 0.523, change24h: -0.76, symbol: 'XRP' },
+    'BCH': { price: 245.89, change24h: 2.87, symbol: 'BCH' },
+    'BNB': { price: 312.45, change24h: -0.34, symbol: 'BNB' },
+    'SOL': { price: 98.76, change24h: 4.21, symbol: 'SOL' },
+    'AVAX': { price: 23.45, change24h: 1.92, symbol: 'AVAX' },
+    'MATIC': { price: 0.89, change24h: -0.23, symbol: 'MATIC' },
+    'UNI': { price: 8.76, change24h: 0.67, symbol: 'UNI' },
+    'ATOM': { price: 12.34, change24h: -1.45, symbol: 'ATOM' },
+    'ALGO': { price: 0.156, change24h: 0.89, symbol: 'ALGO' }
+  };
 
-    const coinIds = symbols.map(symbol => symbolToId[symbol.toUpperCase()]).filter(Boolean);
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 300));
 
-    if (coinIds.length === 0) {
-      throw new Error('No valid crypto symbols found');
+  const result: { [key: string]: { price: number; change24h: number; symbol: string } } = {};
+
+  symbols.forEach(symbol => {
+    if (MOCK_CRYPTO_DATA[symbol.toUpperCase()]) {
+      // Add some random variation to make it feel more realistic
+      const baseData = MOCK_CRYPTO_DATA[symbol.toUpperCase()];
+      const priceVariation = (Math.random() - 0.5) * 0.02; // ±1% variation
+      const changeVariation = (Math.random() - 0.5) * 0.5; // ±0.25% variation
+      
+      result[symbol.toUpperCase()] = {
+        price: baseData.price * (1 + priceVariation),
+        change24h: baseData.change24h + changeVariation,
+        symbol: symbol.toUpperCase()
+      };
     }
+  });
 
-    const response = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${coinIds.join(',')}&vs_currencies=usd&include_24hr_change=true`,
-      {
-        headers: {
-          'Accept': 'application/json',
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
-    }
-
-    const data: CryptoApiResponse = await response.json();
-    
-    // Transform the data to include symbol information
-    const transformedData: { [key: string]: { price: number; change24h: number; symbol: string } } = {};
-    
-    symbols.forEach(symbol => {
-      const coinId = symbolToId[symbol.toUpperCase()];
-      if (coinId && data[coinId]) {
-        transformedData[symbol.toUpperCase()] = {
-          price: data[coinId].usd,
-          change24h: data[coinId].usd_24h_change || 0,
-          symbol: symbol.toUpperCase()
-        };
-      }
-    });
-
-    return transformedData;
-  } catch (error) {
-    console.error('Error fetching crypto data:', error);
-    throw error;
-  }
+  return result;
 };
 
 export const fetchStockData = async (symbols: string[]): Promise<{ [key: string]: { price: number; change24h: number; symbol: string } }> => {
