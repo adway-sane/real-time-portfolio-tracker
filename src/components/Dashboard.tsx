@@ -44,6 +44,20 @@ export default function Dashboard() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [historicalData, setHistoricalData] = useState<number[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  // Add error boundary
+  useEffect(() => {
+    console.log('Dashboard component mounted');
+    try {
+      // Test if all dependencies are loaded
+      console.log('Framer Motion available:', !!motion);
+      console.log('CountUp available:', !!CountUp);
+    } catch (err) {
+      console.error('Error initializing Dashboard:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    }
+  }, []);
 
   // Generate mock historical data for the chart
   const generateHistoricalData = useCallback((currentValue: number) => {
@@ -196,11 +210,36 @@ export default function Dashboard() {
     ],
   };
 
+  // Show error if there's one
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-400 mb-4">Error Loading Portfolio Tracker</h1>
+          <p className="text-gray-300 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
       <Navbar onRefresh={handleRefresh} isLoading={isLoading} />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Debug info - remove in production */}
+        <div className="mb-4 p-4 bg-black/20 rounded-lg text-xs text-gray-300">
+          <p>Debug: Dashboard loaded successfully</p>
+          <p>Assets: {assets.length}</p>
+          <p>Loading: {isLoading ? 'Yes' : 'No'}</p>
+          <p>Error: {error || 'None'}</p>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Portfolio Form */}
           <div className="lg:col-span-1">
