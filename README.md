@@ -2,6 +2,10 @@
 
 A sleek, modern dashboard for tracking your stock and cryptocurrency portfolio in real-time with beautiful charts, live updates, and smooth animations.
 
+## 🌐 Live Demo
+
+**[🚀 View Live Demo](https://adway-sane.github.io/real-time-portfolio-tracker/)**
+
 ![Portfolio Tracker Demo](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Portfolio+Tracker+Dashboard)
 
 ## ✨ Features
@@ -40,10 +44,15 @@ A sleek, modern dashboard for tracking your stock and cryptocurrency portfolio i
 
 ## 🛠️ Installation
 
+### Option 1: View Live Demo
+**[🚀 View Live Demo](https://adway-sane.github.io/real-time-portfolio-tracker/)**
+
+### Option 2: Run Locally
+
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd portfolio-tracker
+   git clone https://github.com/adway-sane/real-time-portfolio-tracker.git
+   cd real-time-portfolio-tracker
    ```
 
 2. **Install dependencies**
@@ -119,6 +128,9 @@ This is a standard Next.js app and can be deployed on:
 ## 📈 Resume Description
 
 **Real-Time Stock & Crypto Portfolio Tracker** *(Live Demo)* — **Next.js, TypeScript, Chart.js, CoinGecko API**
+
+* **Live Demo:** [https://adway-sane.github.io/real-time-portfolio-tracker/](https://adway-sane.github.io/real-time-portfolio-tracker/)
+* **GitHub:** [https://github.com/adway-sane/real-time-portfolio-tracker](https://github.com/adway-sane/real-time-portfolio-tracker)
 
 - Developed a real-time portfolio dashboard integrating cryptocurrency and stock market data from public APIs
 - Built interactive data visualizations with Chart.js and implemented smooth animations using Framer Motion
